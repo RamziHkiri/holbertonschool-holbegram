@@ -1,18 +1,46 @@
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
+plugins {
+    id("com.android.application")
+}
+
+android {
+    namespace = "com.example.holbegram"
+    compileSdk = flutter.compileSdkVersion
+    ndkVersion = flutter.ndkVersion
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        applicationId = "com.example.holbegram"
+        minSdk = 21 // Ensure this is 21 or higher
+        targetSdk = flutter.targetSdkVersion
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
+    }
+
+    buildTypes {
+        release {
+            signingConfig = signingConfigs.debug
+        }
     }
 }
 
-rootProject.buildDir = "../build"
-subprojects {
-    project.buildDir = "${rootProject.buildDir}/${project.name}"
-}
-subprojects {
-    project.evaluationDependsOn(":app")
+dependencies {
+    implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
+
+    // Add the Firebase dependencies you want to use
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-database")
+    // Add other Firebase services as needed
 }
 
-tasks.register("clean", Delete) {
-    delete rootProject.buildDir
-}
+// Add the Google services Gradle plugin
+apply plugin: "com.google.gms.google-services"
+
